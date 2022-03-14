@@ -1,0 +1,12 @@
+.ruby-version
+.generators
+.idea
+.rakeTasks
+.vagrant
+.bundle
+*.gem
+*.mrb
+tmp
+bin
+
+mruby_config.rb.lock
