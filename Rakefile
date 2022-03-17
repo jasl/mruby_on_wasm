@@ -16,6 +16,8 @@ raise(<<-MESSAGE) unless Dir.exist?(MRUBY_DIR.join("src"))
 
 MESSAGE
 
+CC = ENV["CC"] || "emcc"
+
 PROJECT_ROOT = Pathname.new(__dir__)
 ROOT =
   if ENV["TARGET_DIR"] && File.directory?(ENV["TARGET_DIR"])
@@ -28,6 +30,7 @@ ROOT =
 
 OUT_DIR = ROOT.join("bin")
 FileUtils.mkdir_p(OUT_DIR)
+OUT_WASM = OUT_DIR.join("mruby_engine.html").to_s
 
 MRUBY_BIN_DIR = MRUBY_DIR.join("build/host/mrbc/bin")
 MRBC_EXE = MRUBY_BIN_DIR.join("mrbc")
@@ -35,8 +38,33 @@ MRBC_EXE = MRUBY_BIN_DIR.join("mrbc")
 MRUBY_LIB_DIR = MRUBY_DIR.join("build/emscripten/lib")
 MRUBY_LIB = MRUBY_LIB_DIR.join("libmruby.a")
 
+SOURCE_CODES = Dir.glob(PROJECT_ROOT.join("src").join("*.c"))
+
 directory(OUT_DIR)
 file(MRUBY_LIB => %i[mruby:compile])
+file(OUT_WASM => [
+  OUT_DIR,
+  *SOURCE_CODES,
+  __FILE__,
+  MRUBY_LIB
+]) do
+  sh(
+    CC,
+    "--std=c11",
+    "-sMAIN_MODULE=2",
+    "-sEXPORTED_RUNTIME_METHODS=ccall,cwrap",
+    "-sEXPORTED_FUNCTIONS=_me_init",
+    "-Wall",
+    "-Wextra",
+    "-Imruby/include",
+    "-L#{MRUBY_LIB_DIR}",
+    *Flags.wasm32_cflags,
+    *Flags.wasm32_defines.map { |define| "-D#{define}" },
+    "-o", OUT_WASM,
+    *SOURCE_CODES,
+    "-lmruby"
+  )
+end
 
 namespace(:mruby) do
   def within_mruby
@@ -52,7 +80,8 @@ namespace(:mruby) do
   end
 
   # Workaround because it may compiling fail when changing gembox
-  task(compile: :clean) do
+  # task(compile: :clean) do
+  task(:compile) do
     within_mruby do
       sh("ruby", "./minirake")
     end
@@ -76,4 +105,4 @@ task(clean: %i[mruby:mrproper])
 
 task(mrproper: %i[clean mruby:mrproper])
 
-task(default: %i[mruby:compile])
+task(default: [OUT_WASM])
