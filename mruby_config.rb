@@ -28,6 +28,7 @@ MRuby::Build.new do |conf|
   end
 
   conf.linker do |linker|
+    linker.flags += Flags.linker_flags
     linker.library_paths += Flags.library_paths
   end
 end
@@ -51,7 +52,8 @@ MRuby::CrossBuild.new("emscripten") do |conf|
     cc.defines += Flags.wasm32_defines
   end
 
-  # conf.linker do |linker|
-  #   linker.library_paths += Flags.library_paths
-  # end
+  conf.linker do |linker|
+    linker.flags += Flags.wasm32_linker_flags
+    # linker.library_paths += Flags.library_paths
+  end
 end

@@ -18,6 +18,14 @@ module Flags
       optimization_flags
     end
 
+    def linker_flags
+      %w[]
+    end
+
+    def wasm32_linker_flags
+      %w[-m32]
+    end
+
     def library_paths
       # Necessary because of https://github.com/mruby/mruby/issues/4537
       %w[/usr/local/lib /usr/lib]
@@ -41,9 +49,11 @@ module Flags
 
     def wasm32_defines
       io_safe_defines + %w[
+        m32
         MRB_32BIT
         MRB_USE_FLOAT32
         MRB_INT32
+        MRB_GC_TURN_OFF_GENERATIONAL
         MRB_WORDBOX_NO_FLOAT_TRUNCATE
         MRB_USE_RO_DATA_P_ETEXT
       ] # MRB_NO_STDIO

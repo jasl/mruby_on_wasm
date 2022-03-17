@@ -1,8 +1,9 @@
-#ifndef MRUBY_ENGINE_H
-#define MRUBY_ENGINE_H
+#ifndef MRUBY_ENGINE_H_
+#define MRUBY_ENGINE_H_
 
 #include <stdlib.h>
 #include <mruby.h>
+#include <mruby/irep.h>
 
 typedef struct mruby_engine_state {
     struct mrb_state *mrb_state;
@@ -10,7 +11,9 @@ typedef struct mruby_engine_state {
 
 #ifdef __cplusplus
 extern "C" {
-    mruby_engine_state* me_init();
+    mruby_engine_state* me_open();
+    void me_exec(mruby_engine_state* state);
+    void me_close(mruby_engine_state* state);
 }
 #endif
 

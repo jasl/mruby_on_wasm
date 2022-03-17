@@ -50,10 +50,10 @@ file(OUT_WASM => [
 ]) do
   sh(
     CC,
-    "--std=c11",
+    "--std=c99",
     "-sMAIN_MODULE=2",
     "-sEXPORTED_RUNTIME_METHODS=ccall,cwrap",
-    "-sEXPORTED_FUNCTIONS=_me_init",
+    "-sEXPORTED_FUNCTIONS=_me_init,_me_exec,_me_close",
     "-Wall",
     "-Wextra",
     "-Imruby/include",
