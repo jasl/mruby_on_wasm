@@ -1,0 +1,14 @@
+GEM
+  specs:
+    libv8-node (16.10.0.0-arm64-darwin)
+    mini_racer (0.6.2)
+      libv8-node (~> 16.10.0.0)
+
+PLATFORMS
+  arm64-darwin-21
+
+DEPENDENCIES
+  mini_racer
+
+BUNDLED WITH
+   2.3.7

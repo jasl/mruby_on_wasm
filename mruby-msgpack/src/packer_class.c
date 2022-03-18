@@ -82,7 +82,7 @@ Packer_initialize(mrb_state* mrb, mrb_value self)
   if (argc == 0 || (argc == 1 && mrb_obj_eq(mrb, argv[0], mrb_nil_value()))) {
     /* mrb_nil_value() */
   } else if (argc == 1) {
-    puts("hash");
+    // puts("hash");
     mrb_value v = argv[0];
     if (mrb_type(v) == MRB_TT_HASH) {
       options = v;

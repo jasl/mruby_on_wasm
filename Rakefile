@@ -30,7 +30,7 @@ ROOT =
 
 OUT_DIR = ROOT.join("bin")
 FileUtils.mkdir_p(OUT_DIR)
-OUT_WASM = OUT_DIR.join("mruby_engine.html").to_s
+OUT_WASM = OUT_DIR.join("mruby_engine.js").to_s
 
 MRUBY_BIN_DIR = MRUBY_DIR.join("build/host/mrbc/bin")
 MRBC_EXE = MRUBY_BIN_DIR.join("mrbc")
@@ -51,14 +51,31 @@ file(OUT_WASM => [
   sh(
     CC,
     "--std=c99",
-    "-sMAIN_MODULE=2",
+    # "-sMODULARIZE=1",
+    "-sPOLYFILL=0",
+    # "-sEXPORT_ES6=1",
+    "-sPURE_WASI=1",
+    "-sASSERTIONS=1",
+    "-sMAIN_MODULE=1",
+    "-sAUTO_JS_LIBRARIES=0",
+    "-sAUTO_NATIVE_LIBRARIES=0",
+    "-sSTANDALONE_WASM=1",
+    "-sWASM_ASYNC_COMPILATION=0",
+    "--no-entry",
+    "-sWASM_BIGINT=1",
+    "-sENVIRONMENT=shell",
+    "-sSINGLE_FILE=1",
+    # "-sFILESYSTEM=0",
+    "-sEXPORTED_FUNCTIONS=_me_init",
     "-sEXPORTED_RUNTIME_METHODS=ccall,cwrap",
-    "-sEXPORTED_FUNCTIONS=_me_init,_me_exec,_me_close",
+    "-sWEBSOCKET_SUBPROTOCOL=null",
+    # "-sSTRICT=1",
     "-Wall",
     "-Wextra",
     "-Imruby/include",
     "-L#{MRUBY_LIB_DIR}",
-    *Flags.wasm32_cflags,
+    # *Flags.wasm32_cflags,
+    *Flags.wasm32_linker_flags,
     *Flags.wasm32_defines.map { |define| "-D#{define}" },
     "-o", OUT_WASM,
     *SOURCE_CODES,

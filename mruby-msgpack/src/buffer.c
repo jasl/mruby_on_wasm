@@ -637,46 +637,46 @@ msgpack_buffer_flush_to_io(mrb_state* mrb, msgpack_buffer_t* b, mrb_value io, mr
 size_t
 _msgpack_buffer_feed_from_io(mrb_state* mrb, msgpack_buffer_t* b)
 {
-  puts("_msgpack_buffer_feed_from_io in buffer.c\n");
+  // puts("_msgpack_buffer_feed_from_io in buffer.c\n");
   size_t len;
 
   if (mrb_nil_p(b->io_buffer)) {
-     puts("check 1100 in buffer.c\n");
+    //uts("check 1100 in buffer.c\n");
     // las argv error
     //b->io_buffer = mrb_funcall_argv(mrb, b->io, b->io_partial_read_method, 1, LONG2NUM(b->io_buffer_size));
     if (mrb_nil_p(b->io_buffer)) {
-      puts("check 1200 in buffer.c\n");
+      // puts("check 1200 in buffer.c\n");
       /* errorがわからん*/
       //mrb_raise(mrb, rb_eEOFError, "IO reached end of file");
     }
     //StringValue(b->io_buffer);
   } else {
-         puts("check 1300 in buffer.c\n");
-      // las argv error
+    // puts("check 1300 in buffer.c\n");
+    // las argv error
     //mrb_value ret = mrb_funcall_argv(mrb, b->io, b->io_partial_read_method, 2, LONG2NUM(b->io_buffer_size), b->io_buffer);
     mrb_value ret = mrb_nil_value();
-         puts("check 1400 in buffer.c\n");
+    // puts("check 1400 in buffer.c\n");
     if (mrb_nil_p(ret)) {
       /* errorがわからん*/
       //mrb_raise(mrb, rb_eEOFError, "IO reached end of file");
     }
   }
 
-  puts("check 1500 in buffer.c\n");
+  // puts("check 1500 in buffer.c\n");
 
   //len = RSTRING_LEN(b->io_buffer);
   len = 0;
   if (len == 0) {
     /* errorがわからん*/
     //mrb_raise(mrb, rb_eEOFError, "IO reached end of file");
-    puts("IO reached end of file\n");
+    // puts("IO reached end of file\n");
   }
 
-  puts("check 1600 in buffer.c\n");
+  // puts("check 1600 in buffer.c\n");
   /* TODO zero-copy optimize? */
   msgpack_buffer_append_nonblock(mrb, b, RSTRING_PTR(b->io_buffer), len);
 
-  puts("check 1700 in buffer.c\n");
+  // puts("check 1700 in buffer.c\n");
 
   return len;
 }

@@ -540,7 +540,7 @@ void MessagePack_Buffer_module_init(mrb_state *mrb, struct RClass *mMessagePack)
   s_append = mrb_intern_lit(mrb, "<<");
   s_close = mrb_intern_lit(mrb, "close");
 
-  msgpack_buffer_static_init();
+  msgpack_buffer_static_init(mrb);
 
   cMessagePack_Buffer = mrb_define_class_under(mrb, mMessagePack, "Buffer", mrb->object_class);
 

@@ -123,7 +123,7 @@ struct msgpack_buffer_t {
 /*
  * initialization functions
  */
-void msgpack_buffer_static_init();
+void msgpack_buffer_static_init(mrb_state* mrb);
 
 void msgpack_buffer_static_destroy();
 
@@ -475,8 +475,8 @@ msgpack_buffer_read_top_as_string(mrb_state *mrb, msgpack_buffer_t* b, size_t le
 #endif
     mrb_value result = mrb_str_new(mrb, b->read_buffer, length);
     if (frozen) {
-      //puts("frozon is noimplemented.\n");
-      //rb_obj_freeze(result);
+      // puts("frozon is noimplemented.\n");
+      // rb_obj_freeze(result);
     }
     _msgpack_buffer_consumed(mrb, b, length);
     return result;

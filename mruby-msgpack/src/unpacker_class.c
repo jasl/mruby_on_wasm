@@ -245,8 +245,8 @@ Unpacker_peek_next_type(mrb_state *mrb, mrb_value self)
   case TYPE_MAP:
     return mrb_intern(mrb, "map", 3);
   default:
-    puts("logically unknown type dfsadf\n");
-    //mrb_raisef(mrb, eUnpackError, "logically unknown type %d", r);
+    // puts("logically unknown type dfsadf\n");
+    // mrb_raisef(mrb, eUnpackError, "logically unknown type %d", r);
   }
 }
 #endif

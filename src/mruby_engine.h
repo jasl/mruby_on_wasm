@@ -11,6 +11,7 @@ typedef struct mruby_engine_state {
 
 #ifdef __cplusplus
 extern "C" {
+    int main(int argc, char *argv[])
     mruby_engine_state* me_open();
     void me_exec(mruby_engine_state* state);
     void me_close(mruby_engine_state* state);

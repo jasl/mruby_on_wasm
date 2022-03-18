@@ -23,7 +23,7 @@ module Flags
     end
 
     def wasm32_linker_flags
-      %w[-m32]
+      %w[-m32 -flto]
     end
 
     def library_paths
@@ -40,23 +40,18 @@ module Flags
 
     def defines
       io_safe_defines + %w[
-        MRB_USE_FLOAT32
-        MRB_INT32
         MRB_WORDBOX_NO_FLOAT_TRUNCATE
         MRB_USE_RO_DATA_P_ETEXT
-      ] # MRB_NO_STDIO
+      ]
     end
 
     def wasm32_defines
       io_safe_defines + %w[
-        m32
-        MRB_32BIT
-        MRB_USE_FLOAT32
-        MRB_INT32
         MRB_GC_TURN_OFF_GENERATIONAL
         MRB_WORDBOX_NO_FLOAT_TRUNCATE
         MRB_USE_RO_DATA_P_ETEXT
-      ] # MRB_NO_STDIO
+        MRB_NO_STDIO
+      ]
     end
   end
 end
